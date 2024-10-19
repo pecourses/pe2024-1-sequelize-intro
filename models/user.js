@@ -14,8 +14,8 @@ module.exports = (sequelize, DataTypes) => {
           name: 'groupId',
           // allowNull: false,
         },
-        onUpdate: 'CASCADE', // sync
-        onDelete: 'RESTRICT', // sync
+        // onUpdate: 'CASCADE', // sync
+        // onDelete: 'RESTRICT', // sync
       });
     }
     // GroupId
