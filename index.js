@@ -1,5 +1,11 @@
 const { Op, where } = require('sequelize');
-const { sequelize, User, Group } = require('./models');
+const {
+  sequelize,
+  User,
+  Group,
+  Subject,
+  StudentSubjects,
+} = require('./models');
 
 // ! DELETE ALL DATA:
 // DROP TABLE IF EXISTS "Users" CASCADE - { force: true }
@@ -294,11 +300,9 @@ const { sequelize, User, Group } = require('./models');
   // const createdUser1 = await User.create(user1); // model instance
   // const createdUser2 = await User.create(user2); // model instance
   // const createdUser3 = await User.create(user3); // model instance
-
   // Eager Loading - LEFT JOIN
   // const usersWithGroups = await User.findAll({ include: Group, raw: true });
   // console.log(usersWithGroups);
-
   // групу і дописати студентів, якщо вони є в групі
   // const groupWithUsers = await Group.findAll({
   //   where: { id: 1 },
@@ -308,17 +312,76 @@ const { sequelize, User, Group } = require('./models');
   //   raw: true,
   // });
   // console.log(groupWithUsers);
-
   // Lazy Loading - hasMany, belongsTo, ,,,
   // Group.hasMany(User) - group1.getUsers(), ...
-  const group1 = await Group.findByPk(1);
+  // const group1 = await Group.findByPk(1);
+  // const usersInGr1 = await group1.getUsers({ raw: true });
+  // console.log(usersInGr1);
+  // // User.belongsTo(Group) - user1.getGroup(), ...
+  // const user1 = await User.findByPk(1);
+  // const groupByUser1 = await user1.getGroup({ raw: true });
+  // console.log(groupByUser1);
+})();
 
-  const usersInGr1 = await group1.getUsers({ raw: true });
-  console.log(usersInGr1);
+// many-to-many
+(async function () {
+  // const subject1 = { title: 'Data Bases', hours: 100 };
+  // const subject2 = { title: 'Web-programming', hours: 150 };
 
-  // User.belongsTo(Group) - user1.getGroup(), ...
-  const user1 = await User.findByPk(1);
+  // const userSubj1 = { userId: 1, subjectId: 1, mark: 100 };
+  // const userSubj2 = { userId: 1, subjectId: 2, mark: 90 };
+  // const userSubj3 = { userId: 2, subjectId: 1, mark: 85 };
+  // const userSubj4 = { userId: 2, subjectId: 2, mark: 88 };
 
-  const groupByUser1 = await user1.getGroup({ raw: true });
-  console.log(groupByUser1);
+  // await Subject.create(subject1);
+  // await Subject.create(subject2);
+  // await StudentSubjects.create(userSubj1);
+  // await StudentSubjects.create(userSubj2);
+  // await StudentSubjects.create(userSubj3);
+  // await StudentSubjects.create(userSubj4);
+
+  // Eager Loading
+  // const usersWithSubjects = await User.findAll({
+  //   include: Subject,
+  //   raw: true,
+  // });
+
+  // console.log(usersWithSubjects);
+
+  // const usersWithSubjects = await User.findAll({
+  //   include: [
+  //     {
+  //       model: Subject,
+  //       through: { where: { mark: 100 } },
+  //     },
+  //   ],
+  //   raw: true,
+  // });
+
+  // console.log(usersWithSubjects);
+
+  // const usersWithSubjects = await User.findAll({
+  //   include: [{ model: Subject }, { model: Group }],
+  //   raw: true,
+  // });
+
+  // console.log(usersWithSubjects);
+
+  // Lazy Loading
+  // belongsToMany - student1.getSubjects()
+
+  // const user1 = await User.findByPk(1);
+  // const subjOfUser1 = await user1.getSubjects({ raw: true });
+  // console.log(subjOfUser1);
+
+  // отримати студентів, які прослухали предмет 1
+  // const subject1 = await Subject.findByPk(1);
+  // const studentsForSubject = await subject1.getUsers({ raw: true });
+
+  // console.log(studentsForSubject);
+
+  // отримати кількість студентів, які прослухали предмет 1
+  const subject1 = await Subject.findByPk(1);
+  const studentCount = await subject1.countUsers();
+  console.log(`Кількість студентів, які прослухали предмет 1: ${studentCount}`);
 })();
