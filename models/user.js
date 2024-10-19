@@ -17,6 +17,10 @@ module.exports = (sequelize, DataTypes) => {
         // onUpdate: 'CASCADE', // sync
         // onDelete: 'RESTRICT', // sync
       });
+      User.belongsToMany(models.Subject, {
+        through: 'StudentSubjects',
+        foreignKey: 'userId',
+      });
     }
     // GroupId
   }
