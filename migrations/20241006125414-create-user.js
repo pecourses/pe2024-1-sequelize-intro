@@ -28,6 +28,16 @@ module.exports = {
       activitiesCount: {
         type: Sequelize.INTEGER,
       },
+      groupId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Groups',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'RESTRICT',
+        // allowNull: false,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
